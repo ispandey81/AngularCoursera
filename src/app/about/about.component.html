@@ -56,10 +56,10 @@
   </div>
 
 
-  <!-- <div fxFlex="40" *ngIf="leaders"> -->
-  <h2>Corporate Leadership</h2>
-  <!-- <p>Display the details of the corporate leaders here</p> -->
-  <!-- <mat-grid-list cols="2" rowHeight="200px">
+  <div fxFlex="40" *ngIf="leaders">
+    <h2>Corporate Leadership</h2>
+    <!-- <p>Display the details of the corporate leaders here</p> -->
+    <!-- <mat-grid-list cols="2" rowHeight="200px">
       <mat-grid-tile *ngFor="let lead of leader">
         <img height="200px" src={{lead.image}} alt={{lead.name}}>
         <mat-grid-tile-footer>
@@ -67,16 +67,22 @@
         </mat-grid-tile-footer>
       </mat-grid-tile>
     </mat-grid-list> -->
-  <mat-card>
-    <mat-list>
-      <mat-list-item *ngFor="let leader of leaders">
-        <div mat-card-avatar><img mat-card-image src={{leader.image}} alt={{leader.name}}></div>
-        <h2 mat-line>{{leader.name}} {{leader.abbr}}</h2>
-        <h2 mat-line>{{leader.designation}}</h2>
-        <h2 mat-line>{{leader.description}}</h2>
-      </mat-list-item>
-    </mat-list>
-  </mat-card>
-  <!-- <p>Display the list of comments here</p> -->
-  <!-- </div> -->
+    <mat-card>
+      <mat-list>
+        <mat-list-item *ngFor="let leader of leaders">
+          <div mat-card-avatar><img mat-card-image src={{leader.image}} alt={{leader.name}}></div>
+          <h2 mat-line>{{leader.name}} {{leader.abbr}}</h2>
+          <h2 mat-line>{{leader.designation}}</h2>
+          <h2 mat-line>{{leader.description}}</h2>
+        </mat-list-item>
+      </mat-list>
+    </mat-card>
+
+    <!-- <p>Display the list of comments here</p> -->
+  </div>
+  <div [hidden]="leaders">
+    <mat-spinner>
+    </mat-spinner>
+    <h4>Loading ... Please wait</h4>
+  </div>
 </div>
