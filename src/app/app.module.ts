@@ -29,6 +29,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material';
+import { MatSliderModule } from '@angular/material';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,6 +60,7 @@ import { MatProgressSpinnerModule } from '@angular/material';
     ReactiveFormsModule,
     MatSlideToggleModule,
     MatProgressSpinnerModule,
+    MatSliderModule,
     MatSelectModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     IonicModule.forRoot()
