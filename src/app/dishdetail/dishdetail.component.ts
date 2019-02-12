@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Inject } from '@angular/core';
 import { Dish } from '../shared/dish';
 import { Params, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -15,6 +15,8 @@ import { Comment } from '../shared/comment';
 export class DishdetailComponent implements OnInit {
 
   dish: Dish;
+  errMsg: string;
+  dishCopy: Dish;
   dishIds: string[];
   prev: string;
   next: string;
@@ -38,7 +40,8 @@ export class DishdetailComponent implements OnInit {
     }
   };
   @ViewChild('cform') commentFormDirective;
-  constructor(private dishService: DishService, private location: Location, private route: ActivatedRoute, private fb: FormBuilder) {
+  constructor(private dishService: DishService, private location: Location, private route: ActivatedRoute,
+    private fb: FormBuilder, @Inject('BaseURL') private BaseURL) {
     this.createForm();
   }
   createForm() {
@@ -55,7 +58,7 @@ export class DishdetailComponent implements OnInit {
   ngOnInit() {
     this.dishService.getDishIds().subscribe((dishIds) => this.dishIds = dishIds);
     this.route.params.pipe(switchMap((params: Params) => this.dishService.getDish(params['id']))).
-      subscribe((dish) => { this.dish = dish; this.setPrevNext(dish.id); });
+      subscribe((dish) => { this.dish = dish; this.dishCopy = dish; this.setPrevNext(dish.id); }, errMs => this.errMsg = <any>errMs);
   }
   goBack() {
     this.location.back();
@@ -79,7 +82,12 @@ export class DishdetailComponent implements OnInit {
     this.commentForm.setValue({ rating: 5, author: '', comment: '' });
     let date = new Date();
     this.comment.date = date.toISOString();
-    this.dish.comments.push(this.comment);
+    this.dishCopy.comments.push(this.comment);
+    this.dishService.putDish(this.dishCopy).subscribe(dish => {
+      this.dish = dish;
+      this.dishCopy = dish;
+    }, errMsg => { this.dish = null; this.dishCopy = null; this.errMsg = <any>errMsg; });
+    // this.dish.comments.push(this.comment);
   }
   onValueChanged(data?: any) {
     if (!this.commentForm) { return; }

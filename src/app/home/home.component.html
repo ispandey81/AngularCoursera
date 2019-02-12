@@ -1,5 +1,5 @@
-<div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign.gt-md="space-around center"
-  fxLayoutGap="10px">
+<div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+  fxLayoutAlign.gt-md="space-around center" fxLayoutGap="10px">
 
   <mat-card *ngIf="dish" fxFlex>
     <mat-card-header>
@@ -8,16 +8,20 @@
         <h3>{{dish.name | uppercase}}</h3>
       </mat-card-title>
     </mat-card-header>
-    <img mat-card-image src={{dish.image}} alt={{dish.name}}>
+    <img mat-card-image src="{{BaseURL + dish.image}}" alt={{dish.name}}>
     <mat-card-content>
       <p>{{dish.description}}
       </p>
     </mat-card-content>
   </mat-card>
-  <div [hidden]="dish">
+  <div [hidden]="dish || dishErrMsg">
     <mat-spinner>
     </mat-spinner>
     <h4>Loading ... Please wait</h4>
+  </div>
+  <div fxFlex *ngIf="dishErrMsg">
+    <h2>Error</h2>
+    <h4>{{dishErrMsg}}</h4>
   </div>
   <mat-card *ngIf="promotion" fxFlex>
     <mat-card-header>
