@@ -34,6 +34,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { baseURL } from './shared/baseurl';
 import { ProcessHTTPMsgService } from './services/process-httpmsg.service';
 import { HighlightDirective } from './directives/highlight.directive';
+import { FeedbackService } from './services/feedback.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,7 +76,8 @@ import { HighlightDirective } from './directives/highlight.directive';
   entryComponents: [
     LoginComponent
   ],
-  providers: [DishService, PromotionService, LeaderService, { provide: 'BaseURL', useValue: baseURL }, ProcessHTTPMsgService],
+  providers: [DishService, PromotionService, LeaderService, { provide: 'BaseURL', useValue: baseURL },
+    ProcessHTTPMsgService, FeedbackService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

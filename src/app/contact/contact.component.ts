@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
-import { flyInOut } from '../animations/app.animation';
+import { flyInOut, visibility, expand } from '../animations/app.animation';
+import { FeedbackService } from '../services/feedback.service';
+
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
@@ -10,13 +12,16 @@ import { flyInOut } from '../animations/app.animation';
     '[@flyInOut]': 'true',
     'style': 'display: block;'
   },
-  animations: [flyInOut()]
+  animations: [flyInOut(), visibility(), expand()]
 })
 export class ContactComponent implements OnInit {
 
   feedbackForm: FormGroup;
   feedback: Feedback;
   contactType = ContactType;
+  feedbackCopy: Feedback;
+  errMsg: string;
+  visibility: boolean;
   formErrors = {
     'firstname': '',
     'lastname': '',
@@ -44,12 +49,19 @@ export class ContactComponent implements OnInit {
     }
   };
   @ViewChild('fform') feedbackFormDirective;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private feedbackService: FeedbackService) {
     this.createForm();
   }
 
   ngOnInit() {
   }
+  // toggleVisibility() {
+  //   if (this.visibility === 'shown') {
+  //     this.visibility = 'hidden';
+  //   } else {
+  //     this.visibility = 'shown';
+  //   }
+  // }
   createForm() {
     this.feedbackForm = this.fb.group(
       {
@@ -68,6 +80,19 @@ export class ContactComponent implements OnInit {
   onSubmit() {
     this.feedback = this.feedbackForm.value;
     console.log(this.feedbackForm.value);
+    this.feedbackCopy = this.feedback;
+    // this.toggleVisibility();
+    this.visibility = false;
+    console.log(this.visibility);
+    this.feedbackService.submitFeedback(this.feedbackCopy).subscribe(feedback => {
+      this.feedback = feedback;
+      this.feedbackCopy = feedback;
+      this.visibility = true;
+      setTimeout(() => {
+        this.feedback = null; this.feedbackCopy = null;
+      }, 5000);
+    }, errMsg => { this.feedback = null; this.feedbackCopy = null; this.errMsg = <any>errMsg; });
+    console.log(this.visibility);
     this.feedbackForm.reset(
       {
         firstname: '',
@@ -80,6 +105,8 @@ export class ContactComponent implements OnInit {
       }
     );
     this.feedbackFormDirective.resetForm();
+    this.visibility = false;
+    // this.toggleVisibility();
   }
   onValueChanged(data?: any) {
     if (!this.feedbackForm) { return; }
