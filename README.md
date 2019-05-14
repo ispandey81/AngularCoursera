@@ -2,7 +2,7 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.2.
 
-After cloning this repo, open a command line at the root level i.e. where the package.json is located and issue this command -> npm install which install the 
+After cloning this repo, open a command line at the root level i.e. where the package.json is located and issue this command -> npm install which installs the 
 required node packages for this app.
 
 ## Development server
